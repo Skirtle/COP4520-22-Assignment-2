@@ -6,6 +6,7 @@
 #include <iostream>
 #include <thread>
 #include<cstdlib>
+#include <queue>
 
 // Defines
 #define MIN_RAND_N 0
@@ -14,73 +15,49 @@
 
 // Function prototypes
 int randomInt(int min, int max); // A random number between min and max, inclusive of both
-void guestThread(int tid) {
-
-}
-
-// Classes
-class Queue {
-public:
-	int size = 0;
-	int maxSize;
-
-	Queue(int length) {
-		arr = (int*)malloc(length * sizeof(int));
-		maxSize = length;
-		if (arr != NULL) {
-			for (int i = 0; i < maxSize; i++) {
-				arr[i] = -1;
-			}
-		}
-	}
-	
-	~Queue() {
-		free(arr);
-	}
-
-	int dequeue() {
-		if (size <= 0) return -1;
-		int front = arr[0];
-		for (int i = 0; i < maxSize - 1; i++) {
-			arr[i] = arr[i + 1];
-		}
-		arr[maxSize - 1] = -1;
-		size--;
-		return front;
-	}
-
-	int peek() {
-		if (size <= 0) return -1;
-		return arr[0];
-	}
-
-	void enqueue(int val) {
-		if (size < maxSize) {
-			arr[size] = val;
-			size++;
-		}
-	}
-
-	void print() {
-		for (int i = 0; i < maxSize; i++) {
-			std::cout << arr[i] << " ";
-		}
-		std::cout << "\n";
-	}
-
-private:
-	int* arr;
-};
+void guestThread(int tid);
 
 // Globals
 bool roomOccupied = false;
-Queue queue = Queue(DEF_GUEST_COUNT);
+std::queue<int> queue;
 
 
 int main() {
 	// Start
 	srand(time(0));
 
+
+	// Create threads
+	std::thread threads[DEF_GUEST_COUNT];
+	for (int i = 0; i < DEF_GUEST_COUNT; i++) {
+		threads[i] = std::thread(guestThread, i);
+	}
+
+
+	// Create queue
+	queue = std::queue<int>();
+	int temp[DEF_GUEST_COUNT] = {0};
+	for (int i = 0; i < DEF_GUEST_COUNT; i++) {
+		int guest = randomInt(0, DEF_GUEST_COUNT - 1);
+
+		while (temp[guest] == 1) {
+			guest = randomInt(0, DEF_GUEST_COUNT - 1);
+		}
+
+		queue.push(guest);
+		temp[guest] = 1;
+	}
+
+
+
+
+
+
+	// Join threads
+	for (int i = 0; i < DEF_GUEST_COUNT; i++) {
+		threads[i].join();
+	}
+	
 	
 	return 0;
 }
@@ -88,4 +65,8 @@ int main() {
 // Function defines
 int randomInt(int min, int max) {
 	return rand() % (max - min + 1) + min;
+}
+
+void guestThread(int tid) {
+	
 }
