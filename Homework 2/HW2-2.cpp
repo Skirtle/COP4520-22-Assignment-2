@@ -11,6 +11,7 @@
 std::mutex mutex;
 std::condition_variable guests;
 bool roomAvailable = 1;
+bool notReady = true;
 
 // Function prototypes
 void guest(int tid);
@@ -22,6 +23,7 @@ int main() {
     for (int i = 0; i < DEF_GUEST_COUNT; i++) {
         guestThreads[i] = std::thread(guest, i);
     }
+    notReady = false;
 
 
     // Join threads
@@ -33,6 +35,8 @@ int main() {
 }
 
 void guest(int tid) {
+    while (notReady) continue; // Don't go in until all the guests arrive
+
     // Wait until notifed guest can enter the room
     std::unique_lock<std::mutex> lock(mutex);
     while (roomAvailable == 0) guests.wait(lock);
