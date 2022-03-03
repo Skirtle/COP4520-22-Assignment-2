@@ -36,7 +36,6 @@ void guestThread(int id);
 
 
 int main() {
-
 	// Start
 	srand(time(0));
 
