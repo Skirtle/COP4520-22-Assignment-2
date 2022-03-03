@@ -3,13 +3,7 @@ N = number of guests
 Only guest 0 can replace cupcake
 Guest R = random guest (excluding guest 0)
 
-0.0 One chosen guest at a time
-1.0 If guest 0 sees no cupcake, add 1 to counter and replace cupcake
-2.0 If guest 0 sees cupcake, do nothing
-3.0 If guest R sees no cupcake, do nothing
-4.0 If guest R sees cupcake:
-	4.1 If already eaten one, do nothing
-	4.2 If not already eaten one, eat cupcake
+0.0 One guest at a time
 */
 
 // Includes
