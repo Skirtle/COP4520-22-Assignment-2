@@ -39,5 +39,20 @@ The method this program uses is the second strategy given. The room has a sign t
 
 #### Method 1: Advantages and Disadvantages
 - Advantages
+1. Easiest to implement
+- Disadvantages
+1. No guest is guaranteed to go in when checking
+
+#### Method 1: Advantages and Disadvantages
+- Advantages
 1. Easy to implement
-2. Huh?
+2. Each guest guaranteed to enter at some point
+- Disadvantages
+1. There is no order to which the guests enter, quickest to check if available goes in first when trying to enter
+
+#### Method 3: Advantages and Disadvantages
+- Advantages
+1. Each guest guaranteed to enter at some point
+2. Each guest tells the next guest to go in, first come first serve in the order they come, a queue
+- Disadvantages
+1. Hardest to implement
